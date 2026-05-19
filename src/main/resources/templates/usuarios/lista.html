@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: header('Lista de Usuários')}"></head>
+
+<body class="bg-light">
+
+<div th:replace="~{fragments/menu :: body}"></div>
+
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold">Lista de Usuários</h2>
+        <a href="/usuarios/novo" class="btn btn-primary rounded-pill shadow-sm px-4">Novo Usuário</a>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-primary text-primary">
+                <tr>
+                    <th class="ps-4">ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Tipo</th>
+                    <th class="text-center pe-4">Ações</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="u : ${usuarios}">
+                    <td class="ps-4 fw-bold text-muted" th:text="${u.id}"></td>
+                    <td class="fw-semibold text-dark" th:text="${u.nome}"></td>
+                    <td th:text="${u.email}"></td>
+                    <td>
+                        <span class="badge bg-light text-primary border border-primary-subtle rounded-pill px-3 py-1.5" th:text="${u.tipo}"></span>
+                    </td>
+
+                    <td class="pe-4 py-3 text-center">
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a th:href="@{'/enderecos/usuario/' + ${u.id}}" class="btn btn-info btn-sm text-white rounded-pill px-3 shadow-sm">
+                                <i class="bi bi-geo-alt"></i> Endereços
+                            </a>
+                            <a th:href="@{'/usuarios/editar/' + ${u.id}}" class="btn btn-warning btn-sm text-dark rounded-pill px-3 shadow-sm">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <a th:href="@{'/usuarios/deletar/' + ${u.id}}"
+                               class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm"
+                               onclick="return confirm('Tem certeza que deseja excluir este usuário?');">
+                                <i class="bi bi-trash"></i> Excluir
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: header('Lista de Doações')}"></head>
+
+<body class="bg-light">
+
+<div th:replace="~{fragments/menu :: body}"></div>
+
+<div class="container mt-4 mb-5">
+
+    <h2 class="mb-4 text-primary fw-bold">Doações Disponíveis</h2>
+
+    <a href="/doacoes/nova" class="btn btn-primary rounded-pill shadow-sm mb-4">Nova Doação</a>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-primary text-primary">
+                <tr>
+                    <th class="ps-4">ID</th>
+                    <th>Título</th>
+                    <th>Doador</th>
+                    <th>Status</th>
+                    <th class="text-center pe-4">Ações</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="d : ${doacoes}">
+                    <td class="ps-4 fw-bold text-muted" th:text="${d.id}"></td>
+                    <td th:text="${d.titulo}"></td>
+                    <td th:text="${d.doador.nome}"></td>
+
+                    <td>
+                        <span class="badge rounded-pill shadow-sm py-2 px-3"
+                              th:classappend="${
+                                    d.status.name() == 'ABERTA'    ? 'bg-primary' :
+                                    d.status.name() == 'RESERVADA' ? 'bg-warning text-dark' :
+                                    d.status.name() == 'CONCLUIDA' ? 'bg-secondary' :
+                                    d.status.name() == 'CANCELADA' ? 'bg-danger' :
+                                                                     'bg-dark'
+                              }"
+                              th:text="${d.status.descricao}">
+                        </span>
+                    </td>
+
+                    <td class="d-flex gap-2 justify-content-center pe-4 py-3">
+
+                        <a th:href="@{'/doacoes/detalhes/' + ${d.id}}" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                            Detalhes
+                        </a>
+
+                        <a th:href="@{'/itens/doacao/' + ${d.id}}" class="btn btn-primary btn-sm rounded-pill px-3 text-white">
+                            <i class="bi bi-box-seam"></i> Itens
+                        </a>
+
+                        <button class="btn btn-warning btn-sm rounded-pill px-3 shadow-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalStatus"
+                                th:attr="data-id=${d.id}, data-status=${d.status.name()}">
+                            Alterar Status
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalStatus" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+
+            <form method="post" th:action="@{/doacoes/alterar-status}">
+                <div class="modal-header bg-light border-0 rounded-top-4">
+                    <h5 class="modal-title fw-bold text-primary">Alterar Status da Doação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body p-4">
+
+                    <input type="hidden" id="idDoacao" name="id">
+
+                    <label class="form-label text-muted fw-semibold">Novo Status</label>
+                    <select class="form-select rounded-pill" id="statusDoacao" name="status">
+                        <option value="ABERTA">Aberta</option>
+                        <option value="RESERVADA">Reservada</option>
+                        <option value="CONCLUIDA">Concluída</option>
+                        <option value="CANCELADA">Cancelada</option>
+                    </select>
+
+                </div>
+
+                <div class="modal-footer border-0 bg-light rounded-bottom-4">
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">Salvar</button>
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/js/doacoes-status.js}"></script>
+
+</body>
+</html>

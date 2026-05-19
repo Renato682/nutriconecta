@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: header('Detalhes da Doação')}"></head>
+
+<body>
+
+<!-- MENU -->
+<div th:replace="~{fragments/menu :: body}"></div>
+
+<div class="container mt-4">
+
+    <h2 th:text="${doacao.titulo}"></h2>
+
+    <p>
+        <strong>Doador:</strong>
+        <span th:text="${doacao.doador.nome}"></span>
+    </p>
+
+    <p>
+        <strong>Status:</strong>
+        <span class="badge"
+              th:classappend="${
+                    doacao.status.name() == 'ABERTA'    ? 'bg-success' :
+                    doacao.status.name() == 'RESERVADA' ? 'bg-warning text-dark' :
+                    doacao.status.name() == 'CONCLUIDA' ? 'bg-primary' :
+                    doacao.status.name() == 'CANCELADA' ? 'bg-danger' :
+                                                          'bg-secondary'
+              }"
+              th:text="${doacao.status.descricao}">
+        </span>
+    </p>
+
+    <p>
+        <strong>Descrição:</strong>
+        <span th:text="${doacao.descricao}"></span>
+    </p>
+
+    <a href="/doacoes/listar" class="btn btn-secondary mt-3">Voltar</a>
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

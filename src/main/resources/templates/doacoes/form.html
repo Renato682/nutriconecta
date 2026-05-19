@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: header('Cadastro de Doação')}"></head>
+
+<body>
+
+<!-- MENU -->
+<div th:replace="~{fragments/menu :: body}"></div>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4" th:text="${doacao.id == null ? 'Nova Doação' : 'Editar Doação'}"></h2>
+
+    <form th:action="@{/doacoes/salvar}" th:object="${doacao}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <div class="mb-3">
+            <label class="form-label">Título</label>
+            <input type="text" class="form-control" th:field="*{titulo}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-control" th:field="*{descricao}" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Doador</label>
+            <select class="form-select" th:field="*{doador.id}">
+                <option value="">Selecione...</option>
+                <option th:each="d : ${doadores}"
+                        th:value="${d.id}"
+                        th:text="${d.nome}">
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Quantidade (kg)</label>
+            <input type="number" class="form-control" th:field="*{quantidade}" min="1" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Data de Expiração</label>
+            <input type="date" class="form-control" th:field="*{dataExpiracao}">
+        </div>
+
+        <button class="btn btn-success">Salvar</button>
+        <a href="/doacoes/listar" class="btn btn-secondary">Cancelar</a>
+
+    </form>
+
+</div>
+
+<!-- RODAPÉ (CORRETO) -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: header('Cadastro de Usuário')}"></head>
+
+<body class="bg-light">
+
+<div th:replace="~{fragments/menu :: body}"></div>
+
+<div class="container mt-4" style="max-width: 600px;">
+    <h2 class="mb-4 text-primary fw-bold text-center" th:text="${usuario.id == null ? 'Novo Usuário' : 'Editar Usuário'}"></h2>
+
+    <form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="post" class="card p-4 shadow-sm border-0 rounded-4 bg-white">
+
+        <input type="hidden" th:field="*{id}">
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold text-muted">Nome</label>
+            <input type="text" class="form-control rounded-pill" th:field="*{nome}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold text-muted">Email</label>
+            <input type="email" class="form-control rounded-pill" th:field="*{email}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold text-muted">Senha</label>
+            <input type="password" class="form-control rounded-pill" th:field="*{senha}" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-semibold text-muted">Tipo</label>
+            <select class="form-select rounded-pill" th:field="*{tipo}">
+                <option value="">Selecione...</option>
+                <option value="DOADOR">Doador</option>
+                <option value="INSTITUICAO">Instituição</option>
+                <option value="ADMIN">Administrador</option>
+            </select>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3">
+            <a href="/usuarios/listar" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+            <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">Salvar</button>
+        </div>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

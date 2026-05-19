@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header('Endereços Cadastrados')}"></head>
+
+<body class="bg-light">
+
+<div th:replace="~{fragments/menu :: body}"></div>
+
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold"><i class="bi bi-geo-fill"></i> Endereços Cadastrados</h2>
+        <div>
+            <a href="/usuarios/listar" class="btn btn-outline-secondary rounded-pill me-2">Voltar</a>
+            <a th:href="@{'/enderecos/novo/' + ${usuario.id}}" class="btn btn-primary rounded-pill shadow-sm">Novo Endereço</a>
+        </div>
+    </div>
+
+    <p class="text-muted mb-4">Gerenciando os locais de: <strong th:text="${usuario.nome}" class="text-dark"></strong></p>
+
+    <div th:if="${#lists.isEmpty(enderecos)}" class="text-center my-5 p-5 border-0 shadow-sm rounded-4 bg-white">
+        <i class="bi bi-map text-muted" style="font-size: 3rem;"></i>
+        <p class="text-muted mt-3">Nenhum endereço cadastrado para este participante.</p>
+        <p class="text-muted small">Clique no botão "Novo Endereço" acima para adicionar!</p>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(enderecos)}" class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-primary text-primary">
+                <tr>
+                    <th class="ps-4">Logradouro (Rua/Av) e Nº</th>
+                    <th>Bairro</th>
+                    <th>Cidade / UF</th>
+                    <th>CEP</th>
+                    <th class="text-center pe-4">Ações</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="e : ${enderecos}">
+                    <td class="ps-4 fw-semibold" th:text="${e.logradouro + ', ' + e.numero}"></td>
+                    <td th:text="${e.bairro}"></td>
+                    <td th:text="${e.cidade + ' / ' + e.estado}"></td>
+                    <td th:text="${e.cep}"></td>
+
+                    <td class="d-flex gap-2 justify-content-center pe-4 py-3">
+                        <a th:href="@{'/enderecos/editar/' + ${e.id}}" class="btn btn-warning btn-sm rounded-pill px-3 shadow-sm" title="Editar">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a th:href="@{'/enderecos/deletar/' + ${e.id}}"
+                           class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm"
+                           title="Excluir"
+                           onclick="return confirm('Tem certeza que deseja excluir este endereço?');">
+                            <i class="bi bi-trash"></i> Excluir
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
